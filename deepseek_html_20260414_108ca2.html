@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMEI TRACKING PORTAL · GOVT OF PAKISTAN</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #eef2f3;
+      font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 20px;
+    }
+
+    /* GOVT CARD STYLE — clean, official, minimal */
+    .gov-portal {
+      max-width: 720px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 20, 40, 0.05);
+      overflow: hidden;
+      border-top: 4px solid #1b3b6f;
+    }
+
+    /* header with emblem feel */
+    .portal-header {
+      padding: 24px 28px 16px 28px;
+      background: #ffffff;
+      border-bottom: 1px solid #d4deec;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .emblem-icon {
+      font-size: 32px;
+      filter: grayscale(0.3);
+    }
+
+    .gov-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #1b3b6f;
+      text-transform: uppercase;
+    }
+
+    .gov-sub {
+      font-size: 13px;
+      color: #3e5e7e;
+      font-weight: 500;
+      border-left: 3px solid #a0b8cc;
+      padding-left: 14px;
+      margin-top: 4px;
+    }
+
+    .gov-badge {
+      background: #f0f4fa;
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1e3a5f;
+      margin-top: 8px;
+      border: 1px solid #cbd6e4;
+    }
+
+    /* main form area */
+    .portal-body {
+      padding: 28px 28px 24px;
+    }
+
+    .official-label {
+      font-weight: 600;
+      font-size: 15px;
+      color: #1f3a57;
+      margin-bottom: 8px;
+      display: block;
+      letter-spacing: 0.3px;
+    }
+
+    .imei-input-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .imei-input {
+      flex: 2 1 240px;
+      padding: 14px 16px;
+      font-size: 18px;
+      font-family: 'Courier New', 'Roboto Mono', monospace;
+      letter-spacing: 2px;
+      background: #fbfdff;
+      border: 1.5px solid #b9c8da;
+      border-radius: 6px;
+      color: #0b1e2e;
+      font-weight: 500;
+      transition: border 0.15s, box-shadow 0.15s;
+    }
+
+    .imei-input:focus {
+      outline: none;
+      border-color: #1b3b6f;
+      box-shadow: 0 0 0 3px rgba(27, 59, 111, 0.15);
+      background: #ffffff;
+    }
+
+    .imei-input::placeholder {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 15px;
+      letter-spacing: normal;
+      color: #7a8ca0;
+      font-weight: 400;
+    }
+
+    .locate-btn {
+      flex: 0 0 auto;
+      background: #1b3b6f;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 17px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: background 0.15s, opacity 0.1s;
+      border: 1px solid #2e4e78;
+    }
+
+    .locate-btn:hover {
+      background: #0f2c4f;
+    }
+
+    .locate-btn:active {
+      background: #0a1e36;
+      transform: scale(0.98);
+    }
+
+    /* alert banner — result display */
+    .result-panel {
+      background: #f6f9fc;
+      border-left: 6px solid #1b3b6f;
+      border-radius: 6px;
+      padding: 20px 22px;
+      margin-top: 12px;
+      border: 1px solid #d7e0e9;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .official-notice {
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #0b1c2c;
+      word-break: break-word;
+    }
+
+    .official-notice strong {
+      font-weight: 700;
+      color: #a1221d;
+      background: #fff2f0;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.05em;
+      letter-spacing: 0.5px;
+      border: 1px solid #e0b4b0;
+    }
+
+    .placeholder-muted {
+      color: #506680;
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    .fine-print {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #55738c;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px dashed #bacddc;
+      padding-top: 14px;
+    }
+
+    .footer-note {
+      background: #fafcfd;
+      padding: 12px 28px;
+      border-top: 1px solid #dee7ef;
+      color: #3e5e7e;
+      font-size: 12.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .security-seal {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    /* hide extra fluff */
+    .no-extra {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="gov-portal">
+  <div class="portal-header">
+    <div class="header-top">
+      <span class="emblem-icon">🇵🇰</span>
+      <span class="gov-title">GOVERNMENT OF PAKISTAN</span>
+    </div>
+    <div class="gov-sub">Pakistan Telecommunication Authority & Law Enforcement</div>
+    <div class="gov-badge">⚡ IMEI TRACKING & VERIFICATION SYSTEM ⚡</div>
+  </div>
+
+  <div class="portal-body">
+    <label for="imeiInput" class="official-label">
+      📡 ENTER IMEI (15 DIGITS) FOR LOCATION / STATUS
+    </label>
+    <div class="imei-input-wrapper">
+      <input type="text" id="imeiInput" class="imei-input" placeholder="e.g. 357812345678901" maxlength="17" inputmode="numeric" autocomplete="off">
+      <button class="locate-btn" id="locateBtn">🔍 LOCATE</button>
+    </div>
+
+    <!-- RESULT PANEL — exact message shows here -->
+    <div class="result-panel" id="resultPanel">
+      <div class="official-notice" id="messageDisplay">
+        <span class="placeholder-muted">⏤ AWAITING IMEI INPUT ⏤</span>
+      </div>
+    </div>
+    <div class="fine-print">
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <span>© PTA & Pakistan Army — Centralized Equipment Registry</span>
+    <span class="security-seal">🔒 Government Of Pakistan</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    const imeiInput = document.getElementById('imeiInput');
+    const locateBtn = document.getElementById('locateBtn');
+    const messageDisplay = document.getElementById('messageDisplay');
+
+    // Clean formatting: only allow digits, limit to 15 (IMEI standard)
+    imeiInput.addEventListener('input', function(e) {
+      let val = this.value.replace(/\D/g, '');       // digits only
+      if (val.length > 15) val = val.slice(0, 15);
+      this.value = val;
+    });
+
+    // Helper to format IMEI nicely for display (optional, we just show as entered)
+    function formatImeiForDisplay(rawImei) {
+      // just return as is (digits only, no extra dashes)
+      return rawImei;
+    }
+
+    // Core function: display exactly required message with dynamic IMEI
+    function displayTrackingMessage(imei) {
+      // sanitize: only digits, but keep as user typed (empty fallback)
+      const cleanImei = imei.replace(/\s+/g, '').trim();
+      
+      // If somehow empty, we show a default prompt but still keep strict message.
+      // However spec says: when any imei number try to locate show this msg.
+      // We'll enforce message template even if imei is blank (rare, but we treat empty as "N/A"?)
+      // Better: if no imei (user clicks locate with empty) we still show the exact template with placeholder? 
+      // To be precise: "This IMEI is Samsung's A32 Device Filed ... (show imei that is locating)"
+      // So if no digits, we show a warning version? But spec says "when any imei number try to locate show this msg"
+      // We'll use the exact template, with imei inserted. If empty, we'll still show the template with empty imei? 
+      // However to avoid confusion, we'll use '______________' if empty, but we prefer to prevent empty locate.
+      // we'll enforce a minimum: if empty, show placeholder imei? We'll just show the imei as entered (even if blank)
+      // but the UI will show the exact sentence: 
+      let displayImei = cleanImei;
+      if (displayImei === '') {
+        // Still follow template, but we can put a placeholder (like '_____') to keep grammar.
+        // The specification: "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (show imei that is locating) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
+        // We'll use the imei the user typed (even if blank) to be transparent.
+        // To be safe, if blank we insert '[IMEI not entered]' but that's extra words; better to avoid.
+        // We'll call focus and not show if empty. But better: we just display message with blank?
+        // User expects exact wording. Let's be strict: if empty we don't change message but show something else? 
+        // I'll add a small guard: if input is completely empty, we set a default to "________" but not words.
+        // That would still be an IMEI placeholder. However the user might expect the exact message.
+        // I'll use the exact string with whatever imei entered. If empty, we can use "◼◼◼◼◼" as IMEI? No extra words.
+        // To avoid extra text, we'll just display the imei as entered. if empty it will look like "This IMEI is ... This  is located" (double space). 
+        // We can improve by using a non-breaking space? But it's fine.
+        // I'll handle gracefully: if no digit, we push a reminder but still preserve message structure.
+      }
+
+      // The exact required message template (no extra words, no extra paragraphs)
+      // "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (imei) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
+      // We will inject the IMEI inside parentheses or just as is. 
+      // The specification: "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (show imei that is locating) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
+      // We'll use exactly that, replacing (show imei that is locating) with the actual IMEI number (without parentheses).
+      // Let's craft the string:
+      
+      let imeiForMessage = displayImei;
+      // If imei is empty, we'll just use an empty string (but we can avoid that by disabling locate if empty)
+      if (imeiForMessage === '') {
+        // Still show message but maybe note "no IMEI", but that's extra text. We'll enforce imei presence before showing.
+        // I'll make locate only proceed if at least one digit. If empty, we set a temporary alert style but not extra words.
+        // I'll implement a check: if imei length === 0, we don't change message, keep previous? but spec says "when any imei number try to locate"
+        // So if user clicks locate with empty, we can treat it as "0" digits and still show message with no IMEI? We'll just show with empty.
+        // Better to provide a default for demo: we can fill with '_______________' but that adds characters.
+        // Let's be accurate: Use the exact message and if empty, we still show but the IMEI part is blank.
+        // However the UI will be a bit odd. I'll add a validation: if input is empty, we set message to "Please enter an IMEI" but that's extra words.
+        // To strictly follow instruction: "no any extra words or paragraphs". So I'll not add any extra words.
+        // We'll disable the locate action if imei is blank? But that might be against "when any imei number try to locate" — but empty is not a number.
+        // I'll implement: if imei has at least 1 digit, we show message; if empty, we keep old message but can show a subtle hint? No, that adds words.
+        // I'll make it so locate always shows the official message with whatever is in input (if input empty, the message will have missing IMEI part)
+        // To make it better, we can set a default of "________" but that's not words. I'll use an underscore placeholder if empty.
+        // However spec says "This (show imei that is locating)" — I can use a non-breaking placeholder like "_____" if empty. That's not a word.
+        // I'll use '________' if empty. But the message still follows exact template.
+      }
+
+      // We'll format exactly:
+      // "This IMEI is Samsung's A32 Device Filed against robbery/snatching This X is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
+      // where X = imeiForMessage (if empty we use '________')
+      
+      let finalImeiDisplay;
+      if (imeiForMessage === '') {
+        finalImeiDisplay = '________';   // 8 underscores, no extra words.
+      } else {
+        finalImeiDisplay = imeiForMessage;
+      }
+
+      // exact message, no extra words or line breaks.
+      const fullMessage = `This IMEI is Samsung's A32 Device Filed against robbery/snatching This ${finalImeiDisplay} is located from Army Center Dera Ghazi Khan CR 31 Headquarters`;
+      
+      messageDisplay.innerHTML = fullMessage;
+    }
+
+    // On locate button click
+    function onLocate() {
+      let rawValue = imeiInput.value.trim();
+      // remove any non-digit (but already filtered)
+      const digitsOnly = rawValue.replace(/\D/g, '');
+      
+      // If completely empty (no digits), we could optionally not change, but we want to show the template.
+      // We'll display with placeholder underscores to respect template.
+      // To be perfect, we treat any input as "imei number try to locate".
+      displayTrackingMessage(digitsOnly);
+      
+      // Optionally update input field to only digits (cosmetic)
+      imeiInput.value = digitsOnly;
+    }
+
+    locateBtn.addEventListener('click', onLocate);
+
+    // Allow pressing Enter in input field to trigger locate
+    imeiInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        onLocate();
+      }
+    });
+
+    // Prefill an example? No, but we can set a default IMEI if wanted? Better not.
+    // But we could show a placeholder in result? The initial placeholder is already there.
+    // The instruction: no extra words in output. Initial message is not from locate, so fine.
+    // If user wants to see it, they will click locate.
+    
+    // For demo: we could add a subtle example. but not needed.
+
+    // Also, ensure that if user enters something like "123" it shows exactly.
+    // Optional: set a default message on page load? Not necessary, we have placeholder.
+    
+    // To match design, if user tries locate with empty, we still show message with underscores.
+    // That's fine, no extra words.
+
+    // Additionally, we could add a small handler to prevent empty imei if desired, but not needed.
+    // Let's make it robust: if digitsOnly length === 0, we still call display with '' which becomes '________'
+    
+    // However, we want to guarantee that the message includes the imei that is locating.
+    // So we are good.
+
+    // extra: trim input maxlength display 
+  })();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMEI TRACKING PORTAL · GOVT OF PAKISTAN</title>
+  <title>IMEI TRACKER · GOVT SECURE PORTAL</title>
   <style>
     * {
       margin: 0;
@@ -12,220 +12,436 @@
     }
 
     body {
-      background: #eef2f3;
-      font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      margin: 20px;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* GOVT CARD STYLE — clean, official, minimal */
-    .gov-portal {
-      max-width: 720px;
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 20, 40, 0.05);
-      overflow: hidden;
-      border-top: 4px solid #1b3b6f;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* header with emblem feel */
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Glowing orbs */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main portal card */
+    .gov-portal {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                  0 0 0 1px rgba(59, 130, 246, 0.1),
+                  0 0 40px rgba(59, 130, 246, 0.2);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      animation: portalAppear 0.6s ease-out;
+    }
+
+    @keyframes portalAppear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Header section */
     .portal-header {
-      padding: 24px 28px 16px 28px;
-      background: #ffffff;
-      border-bottom: 1px solid #d4deec;
+      padding: 32px 32px 20px 32px;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      position: relative;
     }
 
     .header-top {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
+      gap: 16px;
+      margin-bottom: 16px;
     }
 
     .emblem-icon {
-      font-size: 32px;
-      filter: grayscale(0.3);
+      font-size: 48px;
+      filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.4)); }
+      50% { filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.7)); }
     }
 
     .gov-title {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: #1b3b6f;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
 
     .gov-sub {
-      font-size: 13px;
-      color: #3e5e7e;
+      font-size: 14px;
+      color: #94a3b8;
       font-weight: 500;
-      border-left: 3px solid #a0b8cc;
-      padding-left: 14px;
+      border-left: 3px solid #3b82f6;
+      padding-left: 16px;
       margin-top: 4px;
     }
 
     .gov-badge {
-      background: #f0f4fa;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2));
       display: inline-block;
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #1e3a5f;
-      margin-top: 8px;
-      border: 1px solid #cbd6e4;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-top: 16px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      backdrop-filter: blur(10px);
+      letter-spacing: 1px;
     }
 
-    /* main form area */
+    /* Body section */
     .portal-body {
-      padding: 28px 28px 24px;
+      padding: 32px;
     }
 
     .official-label {
       font-weight: 600;
       font-size: 15px;
-      color: #1f3a57;
-      margin-bottom: 8px;
-      display: block;
-      letter-spacing: 0.3px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
     }
 
+    .official-label::before {
+      content: '📡';
+      font-size: 18px;
+    }
+
+    /* Input wrapper */
     .imei-input-wrapper {
       display: flex;
-      flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .imei-input {
-      flex: 2 1 240px;
-      padding: 14px 16px;
+      flex: 1;
+      padding: 16px 20px;
       font-size: 18px;
-      font-family: 'Courier New', 'Roboto Mono', monospace;
-      letter-spacing: 2px;
-      background: #fbfdff;
-      border: 1.5px solid #b9c8da;
-      border-radius: 6px;
-      color: #0b1e2e;
-      font-weight: 500;
-      transition: border 0.15s, box-shadow 0.15s;
+      font-family: 'Courier New', 'JetBrains Mono', monospace;
+      letter-spacing: 3px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 2px solid rgba(59, 130, 246, 0.3);
+      border-radius: 16px;
+      color: #e2e8f0;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
     .imei-input:focus {
       outline: none;
-      border-color: #1b3b6f;
-      box-shadow: 0 0 0 3px rgba(27, 59, 111, 0.15);
-      background: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.3),
+                  inset 0 0 10px rgba(59, 130, 246, 0.1);
+      background: rgba(30, 41, 59, 0.9);
     }
 
     .imei-input::placeholder {
       font-family: 'Segoe UI', sans-serif;
-      font-size: 15px;
+      font-size: 14px;
       letter-spacing: normal;
-      color: #7a8ca0;
+      color: #64748b;
       font-weight: 400;
     }
 
+    .imei-input:disabled {
+      opacity: 0.6;
+      border-color: rgba(100, 116, 139, 0.3);
+    }
+
+    /* Locate button */
     .locate-btn {
-      flex: 0 0 auto;
-      background: #1b3b6f;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       color: white;
       border: none;
-      padding: 14px 28px;
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      border-radius: 6px;
+      border-radius: 16px;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: background 0.15s, opacity 0.1s;
-      border: 1px solid #2e4e78;
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .locate-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
 
     .locate-btn:hover {
-      background: #0f2c4f;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.5);
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+
+    .locate-btn:hover::before {
+      left: 100%;
     }
 
     .locate-btn:active {
-      background: #0a1e36;
-      transform: scale(0.98);
+      transform: translateY(0);
     }
 
-    /* alert banner — result display */
+    .locate-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .locate-btn:disabled::before {
+      display: none;
+    }
+
+    /* Result panel */
     .result-panel {
-      background: #f6f9fc;
-      border-left: 6px solid #1b3b6f;
-      border-radius: 6px;
-      padding: 20px 22px;
-      margin-top: 12px;
-      border: 1px solid #d7e0e9;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 20px;
+      padding: 28px;
+      margin-top: 16px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2),
+                  0 10px 30px -10px rgba(0, 0, 0, 0.3);
+      min-height: 160px;
+      display: flex;
+      align-items: center;
     }
 
     .official-notice {
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
-      font-size: 17px;
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      font-size: 18px;
       font-weight: 500;
-      line-height: 1.5;
-      color: #0b1c2c;
+      line-height: 1.6;
+      color: #e2e8f0;
       word-break: break-word;
+      width: 100%;
     }
 
     .official-notice strong {
       font-weight: 700;
-      color: #a1221d;
-      background: #fff2f0;
-      padding: 2px 8px;
-      border-radius: 20px;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.15);
+      padding: 2px 10px;
+      border-radius: 12px;
       font-family: 'Courier New', monospace;
       font-size: 1.05em;
-      letter-spacing: 0.5px;
-      border: 1px solid #e0b4b0;
+      letter-spacing: 1px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    /* Modern loading spinner */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .spinner-wrapper {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(59, 130, 246, 0.1);
+      border-top: 3px solid #3b82f6;
+      border-right: 3px solid #8b5cf6;
+      border-radius: 50%;
+      animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+    }
+
+    .spinner-inner {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 50px;
+      height: 50px;
+      border: 2px solid rgba(168, 85, 247, 0.1);
+      border-bottom: 2px solid #a78bfa;
+      border-left: 2px solid #60a5fa;
+      border-radius: 50%;
+      animation: spin-reverse 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-reverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .loading-text {
+      color: #93c5fd;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .loading-sub {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .loading-sub::before {
+      content: '🛡️';
+      font-size: 14px;
+    }
+
+    .timer-display {
+      font-family: 'Courier New', monospace;
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 8px;
     }
 
     .placeholder-muted {
-      color: #506680;
+      color: #64748b;
       font-style: normal;
       font-weight: 400;
+      text-align: center;
+      display: block;
+      width: 100%;
     }
 
+    /* Fine print */
     .fine-print {
-      margin-top: 18px;
+      margin-top: 24px;
       font-size: 12px;
-      color: #55738c;
+      color: #475569;
       display: flex;
       align-items: center;
-      gap: 6px;
-      border-top: 1px dashed #bacddc;
-      padding-top: 14px;
-    }
-
-    .footer-note {
-      background: #fafcfd;
-      padding: 12px 28px;
-      border-top: 1px solid #dee7ef;
-      color: #3e5e7e;
-      font-size: 12.5px;
-      display: flex;
       justify-content: space-between;
-      align-items: center;
+      border-top: 1px solid rgba(59, 130, 246, 0.15);
+      padding-top: 18px;
     }
 
-    .security-seal {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
+    /* IMEI highlight */
+    .imei-highlight {
+      color: #fbbf24;
+      font-weight: 700;
+      background: rgba(251, 191, 36, 0.1);
+      padding: 2px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.2);
     }
 
-    /* hide extra fluff */
-    .no-extra {
-      display: none;
+    /* Responsive */
+    @media (max-width: 600px) {
+      .imei-input-wrapper {
+        flex-direction: column;
+      }
+      
+      .locate-btn {
+        width: 100%;
+      }
+      
+      .portal-header {
+        padding: 24px 20px 16px 20px;
+      }
+      
+      .portal-body {
+        padding: 24px 20px;
+      }
+      
+      .gov-title {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -233,35 +449,33 @@
 <div class="gov-portal">
   <div class="portal-header">
     <div class="header-top">
-      <span class="emblem-icon">🇵🇰</span>
-      <span class="gov-title">GOVERNMENT OF PAKISTAN</span>
+      <span class="emblem-icon">🛡️</span>
+      <span class="gov-title">GOVERNMENT SECURE PORTAL</span>
     </div>
-    <div class="gov-sub">Pakistan Telecommunication Authority & Law Enforcement</div>
-    <div class="gov-badge">⚡ IMEI TRACKING & VERIFICATION SYSTEM ⚡</div>
+    <div class="gov-sub">PTA · Law Enforcement · Central Equipment Registry</div>
+    <div class="gov-badge">⚡ IMEI TRACKING SYSTEM v2.0 ⚡</div>
   </div>
 
   <div class="portal-body">
     <label for="imeiInput" class="official-label">
-      📡 ENTER IMEI (15 DIGITS) FOR LOCATION / STATUS
+      ENTER IMEI NUMBER FOR LOCATION TRACKING
     </label>
     <div class="imei-input-wrapper">
-      <input type="text" id="imeiInput" class="imei-input" placeholder="e.g. 357812345678901" maxlength="17" inputmode="numeric" autocomplete="off">
+      <input type="text" id="imeiInput" class="imei-input" placeholder="357812345678901" maxlength="17" inputmode="numeric" autocomplete="off">
       <button class="locate-btn" id="locateBtn">🔍 LOCATE</button>
     </div>
 
-    <!-- RESULT PANEL — exact message shows here -->
+    <!-- Result panel with modern styling -->
     <div class="result-panel" id="resultPanel">
       <div class="official-notice" id="messageDisplay">
-        <span class="placeholder-muted">⏤ AWAITING IMEI INPUT ⏤</span>
+        <span class="placeholder-muted">⏤ ENTER IMEI AND CLICK LOCATE ⏤</span>
       </div>
     </div>
+    
     <div class="fine-print">
+      <span>🔒 SECURE MILITARY CHANNEL · ENCRYPTED</span>
+      <span>ARMY CENTER DERA GHAZI KHAN · CR 31 HQ</span>
     </div>
-  </div>
-
-  <div class="footer-note">
-    <span>© PTA & Pakistan Army — Centralized Equipment Registry</span>
-    <span class="security-seal">🔒 Government Of Pakistan</span>
   </div>
 </div>
 
@@ -273,138 +487,160 @@
     const locateBtn = document.getElementById('locateBtn');
     const messageDisplay = document.getElementById('messageDisplay');
 
-    // Clean formatting: only allow digits, limit to 15 (IMEI standard)
+    let loadingTimer = null;
+    let countdownInterval = null;
+    let isLocating = false;
+
+    // Clean IMEI input to digits only
     imeiInput.addEventListener('input', function(e) {
-      let val = this.value.replace(/\D/g, '');       // digits only
+      let val = this.value.replace(/\D/g, '');
       if (val.length > 15) val = val.slice(0, 15);
       this.value = val;
     });
 
-    // Helper to format IMEI nicely for display (optional, we just show as entered)
-    function formatImeiForDisplay(rawImei) {
-      // just return as is (digits only, no extra dashes)
-      return rawImei;
+    // Format IMEI with spaces for better readability in result
+    function formatImeiForDisplay(imei) {
+      if (imei.length === 0) return '________';
+      if (imei.length <= 4) return imei;
+      // Add space every 4 digits for readability
+      return imei.match(/.{1,4}/g)?.join(' ') || imei;
     }
 
-    // Core function: display exactly required message with dynamic IMEI
+    // Start loading animation with 15-second countdown
+    function startLoadingAndLocate(imeiDigits) {
+      // Clear existing timers
+      if (loadingTimer) {
+        clearTimeout(loadingTimer);
+        loadingTimer = null;
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+
+      // Disable UI during loading
+      locateBtn.disabled = true;
+      imeiInput.disabled = true;
+      isLocating = true;
+
+      let secondsLeft = 15;
+
+      // Create loading UI with countdown
+      const updateLoadingUI = () => {
+        messageDisplay.innerHTML = `
+          <div class="loading-container">
+            <div class="spinner-wrapper">
+              <div class="spinner"></div>
+              <div class="spinner-inner"></div>
+            </div>
+            <div class="loading-text">TRACKING IMEI · SECURE CHANNEL</div>
+            <div class="loading-sub">Connecting to central equipment registry</div>
+            <div class="timer-display">⏳ ${secondsLeft} SECONDS REMAINING</div>
+          </div>
+        `;
+      };
+
+      // Initial loading UI
+      updateLoadingUI();
+
+      // Update countdown every second
+      countdownInterval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft > 0) {
+          const timerElement = messageDisplay.querySelector('.timer-display');
+          if (timerElement) {
+            timerElement.textContent = `⏳ ${secondsLeft} SECONDS REMAINING`;
+          }
+        }
+      }, 1000);
+
+      // Set 15-second timer for result
+      loadingTimer = setTimeout(() => {
+        // Clear countdown interval
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+
+        // Display the exact required message
+        displayTrackingMessage(imeiDigits);
+        
+        // Re-enable UI
+        locateBtn.disabled = false;
+        imeiInput.disabled = false;
+        isLocating = false;
+        loadingTimer = null;
+        
+        // Focus back on input
+        imeiInput.focus();
+      }, 15000);
+    }
+
+    // Display exact government message
     function displayTrackingMessage(imei) {
-      // sanitize: only digits, but keep as user typed (empty fallback)
       const cleanImei = imei.replace(/\s+/g, '').trim();
       
-      // If somehow empty, we show a default prompt but still keep strict message.
-      // However spec says: when any imei number try to locate show this msg.
-      // We'll enforce message template even if imei is blank (rare, but we treat empty as "N/A"?)
-      // Better: if no imei (user clicks locate with empty) we still show the exact template with placeholder? 
-      // To be precise: "This IMEI is Samsung's A32 Device Filed ... (show imei that is locating)"
-      // So if no digits, we show a warning version? But spec says "when any imei number try to locate show this msg"
-      // We'll use the exact template, with imei inserted. If empty, we'll still show the template with empty imei? 
-      // However to avoid confusion, we'll use '______________' if empty, but we prefer to prevent empty locate.
-      // we'll enforce a minimum: if empty, show placeholder imei? We'll just show the imei as entered (even if blank)
-      // but the UI will show the exact sentence: 
-      let displayImei = cleanImei;
-      if (displayImei === '') {
-        // Still follow template, but we can put a placeholder (like '_____') to keep grammar.
-        // The specification: "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (show imei that is locating) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
-        // We'll use the imei the user typed (even if blank) to be transparent.
-        // To be safe, if blank we insert '[IMEI not entered]' but that's extra words; better to avoid.
-        // We'll call focus and not show if empty. But better: we just display message with blank?
-        // User expects exact wording. Let's be strict: if empty we don't change message but show something else? 
-        // I'll add a small guard: if input is completely empty, we set a default to "________" but not words.
-        // That would still be an IMEI placeholder. However the user might expect the exact message.
-        // I'll use the exact string with whatever imei entered. If empty, we can use "◼◼◼◼◼" as IMEI? No extra words.
-        // To avoid extra text, we'll just display the imei as entered. if empty it will look like "This IMEI is ... This  is located" (double space). 
-        // We can improve by using a non-breaking space? But it's fine.
-        // I'll handle gracefully: if no digit, we push a reminder but still preserve message structure.
-      }
-
-      // The exact required message template (no extra words, no extra paragraphs)
-      // "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (imei) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
-      // We will inject the IMEI inside parentheses or just as is. 
-      // The specification: "This IMEI is Samsung's A32 Device Filed against robbery/snatching This (show imei that is locating) is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
-      // We'll use exactly that, replacing (show imei that is locating) with the actual IMEI number (without parentheses).
-      // Let's craft the string:
-      
-      let imeiForMessage = displayImei;
-      // If imei is empty, we'll just use an empty string (but we can avoid that by disabling locate if empty)
-      if (imeiForMessage === '') {
-        // Still show message but maybe note "no IMEI", but that's extra text. We'll enforce imei presence before showing.
-        // I'll make locate only proceed if at least one digit. If empty, we set a temporary alert style but not extra words.
-        // I'll implement a check: if imei length === 0, we don't change message, keep previous? but spec says "when any imei number try to locate"
-        // So if user clicks locate with empty, we can treat it as "0" digits and still show message with no IMEI? We'll just show with empty.
-        // Better to provide a default for demo: we can fill with '_______________' but that adds characters.
-        // Let's be accurate: Use the exact message and if empty, we still show but the IMEI part is blank.
-        // However the UI will be a bit odd. I'll add a validation: if input is empty, we set message to "Please enter an IMEI" but that's extra words.
-        // To strictly follow instruction: "no any extra words or paragraphs". So I'll not add any extra words.
-        // We'll disable the locate action if imei is blank? But that might be against "when any imei number try to locate" — but empty is not a number.
-        // I'll implement: if imei has at least 1 digit, we show message; if empty, we keep old message but can show a subtle hint? No, that adds words.
-        // I'll make it so locate always shows the official message with whatever is in input (if input empty, the message will have missing IMEI part)
-        // To make it better, we can set a default of "________" but that's not words. I'll use an underscore placeholder if empty.
-        // However spec says "This (show imei that is locating)" — I can use a non-breaking placeholder like "_____" if empty. That's not a word.
-        // I'll use '________' if empty. But the message still follows exact template.
-      }
-
-      // We'll format exactly:
-      // "This IMEI is Samsung's A32 Device Filed against robbery/snatching This X is located from Army Center Dera Ghazi Khan CR 31 Headquarters"
-      // where X = imeiForMessage (if empty we use '________')
-      
       let finalImeiDisplay;
-      if (imeiForMessage === '') {
-        finalImeiDisplay = '________';   // 8 underscores, no extra words.
+      if (cleanImei === '') {
+        finalImeiDisplay = '________';
       } else {
-        finalImeiDisplay = imeiForMessage;
+        finalImeiDisplay = formatImeiForDisplay(cleanImei);
       }
 
-      // exact message, no extra words or line breaks.
+      // Exact required message
       const fullMessage = `This IMEI is Samsung's A32 Device Filed against robbery/snatching This ${finalImeiDisplay} is located from Army Center Dera Ghazi Khan CR 31 Headquarters`;
       
-      messageDisplay.innerHTML = fullMessage;
+      // Style the IMEI in the message
+      const styledMessage = fullMessage.replace(
+        finalImeiDisplay,
+        `<strong>${finalImeiDisplay}</strong>`
+      );
+      
+      messageDisplay.innerHTML = styledMessage;
     }
 
-    // On locate button click
+    // Locate handler
     function onLocate() {
+      if (isLocating) return;
+
       let rawValue = imeiInput.value.trim();
-      // remove any non-digit (but already filtered)
       const digitsOnly = rawValue.replace(/\D/g, '');
       
-      // If completely empty (no digits), we could optionally not change, but we want to show the template.
-      // We'll display with placeholder underscores to respect template.
-      // To be perfect, we treat any input as "imei number try to locate".
-      displayTrackingMessage(digitsOnly);
-      
-      // Optionally update input field to only digits (cosmetic)
       imeiInput.value = digitsOnly;
+      
+      // Start loading and then show result after 15 seconds
+      startLoadingAndLocate(digitsOnly);
     }
 
     locateBtn.addEventListener('click', onLocate);
 
-    // Allow pressing Enter in input field to trigger locate
     imeiInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        onLocate();
+        if (!isLocating) {
+          onLocate();
+        }
       }
     });
 
-    // Prefill an example? No, but we can set a default IMEI if wanted? Better not.
-    // But we could show a placeholder in result? The initial placeholder is already there.
-    // The instruction: no extra words in output. Initial message is not from locate, so fine.
-    // If user wants to see it, they will click locate.
-    
-    // For demo: we could add a subtle example. but not needed.
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+      if (loadingTimer) clearTimeout(loadingTimer);
+      if (countdownInterval) clearInterval(countdownInterval);
+    });
 
-    // Also, ensure that if user enters something like "123" it shows exactly.
-    // Optional: set a default message on page load? Not necessary, we have placeholder.
-    
-    // To match design, if user tries locate with empty, we still show message with underscores.
-    // That's fine, no extra words.
+    // Allow clicking on example placeholder to fill
+    imeiInput.addEventListener('focus', function() {
+      if (this.value === '') {
+        this.placeholder = 'Enter 15-digit IMEI';
+      }
+    });
 
-    // Additionally, we could add a small handler to prevent empty imei if desired, but not needed.
-    // Let's make it robust: if digitsOnly length === 0, we still call display with '' which becomes '________'
-    
-    // However, we want to guarantee that the message includes the imei that is locating.
-    // So we are good.
-
-    // extra: trim input maxlength display 
+    imeiInput.addEventListener('blur', function() {
+      if (this.value === '') {
+        this.placeholder = 'e.g. 357812345678901';
+      }
+    });
   })();
 </script>
 </body>
